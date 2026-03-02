@@ -1,3 +1,0 @@
-Python is powerful. Python is simple to learn.
-
-Many startups use Python for NLP projects.

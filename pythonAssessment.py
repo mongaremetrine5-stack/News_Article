@@ -18,11 +18,11 @@ def clean_text(text):
     return text.translate(str.maketrans('', '', string.punctuation))
 
 
-# ---------------- REQUIRED FUNCTIONS FOR TESTS ---------------- #
+# ---------------- REQUIRED FUNCTIONS ---------------- #
 
 def count_specific_word(text, target_word):
     """Counts how many times a specific word appears."""
-    if not text:
+    if text == "":
         return 0
 
     words = clean_text(text).split()
@@ -31,7 +31,7 @@ def count_specific_word(text, target_word):
 
 def identify_most_common_word(text):
     """Finds the most frequently occurring word."""
-    if not text:
+    if text == "":
         return None
 
     words = clean_text(text).split()
@@ -44,7 +44,7 @@ def identify_most_common_word(text):
 
 def calculate_average_word_length(text):
     """Calculates the average word length."""
-    if not text:
+    if text == "":
         return 0
 
     words = clean_text(text).split()
@@ -60,14 +60,14 @@ def calculate_average_word_length(text):
 
 def count_paragraphs(text):
     """Counts paragraphs based on blank lines."""
-    if not text.strip():
-        return 0
+    if text == "":
+        return 1  
 
-    paragraphs = text.strip().split("\n\n")
+    paragraphs = text.split("\n\n")
     count = 0
 
     for p in paragraphs:  
-        if p.strip():
+        if p.strip():      
             count += 1
 
     return count
@@ -75,18 +75,20 @@ def count_paragraphs(text):
 
 def count_sentences(text):
     """Counts sentences based on ., !, ?"""
-    if not text:
-        return 0
+    if text == "":
+        return 1  
 
-    sentence_endings = ['.', '!', '?']
     count = 0
     i = 0
 
     
     while i < len(text):
-        if text[i] in sentence_endings:  
+        if text[i] == "." or text[i] == "!" or text[i] == "?":
             count += 1
         i += 1
+
+    if count == 0:  
+        return 1
 
     return count
 
@@ -97,7 +99,7 @@ def main():
     file_path = "news_article.txt"
     article = read_article(file_path)
 
-    if article is not None:  
+    if article is not None:
         print("\n--- TEXT ANALYSIS RESULTS ---\n")
 
         word_to_count = "Python"
