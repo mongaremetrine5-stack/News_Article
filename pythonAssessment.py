@@ -18,58 +18,97 @@ def clean_text(text):
     return text.translate(str.maketrans('', '', string.punctuation))
 
 
-def count_word(text, target_word):
+# ---------------- REQUIRED FUNCTIONS FOR TESTS ---------------- #
+
+def count_specific_word(text, target_word):
     """Counts how many times a specific word appears."""
+    if not text:
+        return 0
+
     words = clean_text(text).split()
     return words.count(target_word.lower())
 
 
-def most_common_word(text):
+def identify_most_common_word(text):
     """Finds the most frequently occurring word."""
+    if not text:
+        return None
+
     words = clean_text(text).split()
+    if not words:
+        return None
+
     word_counts = Counter(words)
-    return word_counts.most_common(1)[0]
+    return word_counts.most_common(1)[0][0]
 
 
-def average_word_length(text):
+def calculate_average_word_length(text):
     """Calculates the average word length."""
+    if not text:
+        return 0
+
     words = clean_text(text).split()
-    total_length = sum(len(word) for word in words)
-    return total_length / len(words) if words else 0
+    if not words:
+        return 0
+
+    total_length = 0
+    for word in words:  
+        total_length += len(word)
+
+    return total_length / len(words)
 
 
 def count_paragraphs(text):
     """Counts paragraphs based on blank lines."""
+    if not text.strip():
+        return 0
+
     paragraphs = text.strip().split("\n\n")
-    return len([p for p in paragraphs if p.strip()])
+    count = 0
+
+    for p in paragraphs:  
+        if p.strip():
+            count += 1
+
+    return count
 
 
 def count_sentences(text):
     """Counts sentences based on ., !, ?"""
+    if not text:
+        return 0
+
     sentence_endings = ['.', '!', '?']
     count = 0
-    for char in text:
-        if char in sentence_endings:
+    i = 0
+
+    
+    while i < len(text):
+        if text[i] in sentence_endings:  
             count += 1
+        i += 1
+
     return count
 
 
+# ---------------- MAIN PROGRAM ---------------- #
+
 def main():
-    file_path = "news_article.txt"  
+    file_path = "news_article.txt"
     article = read_article(file_path)
 
-    if article is None:
+    if article is not None:  
         print("\n--- TEXT ANALYSIS RESULTS ---\n")
 
         word_to_count = "Python"
         print("Using test word:", word_to_count)
 
-        print(f"Occurrences of '{word_to_count}': {count_word(article, word_to_count)}")
+        print(f"Occurrences of '{word_to_count}': {count_specific_word(article, word_to_count)}")
 
-        common_word, frequency = most_common_word(article)
-        print(f"Most common word: '{common_word}' (appears {frequency} times)")
+        common_word = identify_most_common_word(article)
+        print(f"Most common word: '{common_word}'")
 
-        print(f"Average word length: {average_word_length(article):.2f}")
+        print(f"Average word length: {calculate_average_word_length(article):.2f}")
 
         print(f"Number of paragraphs: {count_paragraphs(article)}")
 
